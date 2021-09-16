@@ -1,3 +1,21 @@
 header {
     font-size: large;
 }
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+.flex-center {
+    justify-content: center;
+    align-items: center;
+}
+.justify-center {
+    justify-content: center;
+} 
+.btn {
+    padding: 2rem 0;
+    width: 30rem;
+    text-align: center;
+    text-decoration: none;
+}
