@@ -1,21 +1,29 @@
-header {
-    font-size: large;
+*, *::before, *::after {
+    box-sizing: border-box;
 }
 
-.flex-column {
+body {
+    padding: 0;
+    margin: 0;
     display: flex;
-    flex-direction: column;
-}
-.flex-center {
     justify-content: center;
     align-items: center;
 }
-.justify-center {
-    justify-content: center;
-} 
+.container {
+    width: 800px;
+    max-width: 80%;
+    border-radius: 5px; 
+    padding: 10px;
+    box-shadow: 0 0 10px 2px;
+}
+.btn-grid {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 10px;
+    margin: 20px 0;
+}
 .btn {
-    padding: 2rem 0;
-    width: 30rem;
-    text-align: center;
-    text-decoration: none;
+border: 1px solid navy;
+border-radius: 5px;
+padding: 5px 10px;
 }
