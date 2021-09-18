@@ -6,6 +6,9 @@ const answerButtonsEl = document.getElementById('answer-buttons');
 var timerEl = document.getElementById('timer');
 let shuffledQuestions, currentQuestionIndex = 0;
 var timeLeft = 90;
+var time = 90;
+var timerId;
+
 const questions = [
     {
      question: "What language gives a browser the basic markup to create a page on the internet?",
@@ -45,32 +48,49 @@ answerButtonsEl.addEventListener('click',() => {
 })
 
 
-function countdown() {
-    startTimeLeft = 90
-    var timeInterval = setInterval(function(){
-        if (timeLeft === 0) {
-            timerEl.textContent = ' ';
-            clearInterval(timeInterval);
-            displayMessage();
-            return;
-            }
-        if (timeLeft === 1) {
-            timerEl.textContent = timeLeft + ' second remaining';
-            } else {
-            timerEl.textContent = timeLeft + ' seconds remaining';
-            }
-        timeLeft = startTimeLeft--
-        return timeLeft;
-        }, 1000);
+// function countdown() {
+//     startTimeLeft = 90
+//     var timeInterval = setInterval(function(){
+//         if (timeLeft === 0) {
+//             timerEl.textContent = ' ';
+//             clearInterval(timeInterval);
+//             displayMessage();
+//             return;
+//             }
+//         if (timeLeft === 1) {
+//             timerEl.textContent = timeLeft + ' second remaining';
+//             } else {
+//             timerEl.textContent = timeLeft + ' seconds remaining';
+//             }
+//         timeLeft = startTimeLeft--
+//         return timeLeft;
+//         }, 1000);
+//     }
+function clockTick() {
+    time--;
+    timerEl.textContent = time;
+    if (time <= 0) {
+        stopGame()
     }
+}
 
 function startGame() { 
     startButtonEl.classList.add('hide')
     shuffledQuestions = questions.sort(() => Math.random() -  .5)
     currentQuestionIndex = 0
     questionContainerEl.classList.remove('hide')
-    countdown();
+    // countdown();
+    timerId = setInterval(clockTick, 1000)
+    timerEl.textContent = time;
+    clockTick();
     setNextQuestion();
+}
+
+function stopGame() {
+    clearInterval(timerEl);
+
+    //
+
 }
 
 function setNextQuestion() {
