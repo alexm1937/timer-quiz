@@ -4,7 +4,8 @@ const questionContainerEl = document.getElementById('question-container')
 const questionEl = document.getElementById('question')
 const answerButtonsEl = document.getElementById('answer-buttons');
 var timerEl = document.getElementById('timer');
-let shuffledQuestions, currentQuestionIndex = 0
+let shuffledQuestions, currentQuestionIndex = 0;
+var timeLeft = 90;
 const questions = [
     {
      question: "What language gives a browser the basic markup to create a page on the internet?",
@@ -29,39 +30,46 @@ const questions = [
                 
             ]}
 ]
+
 startButtonEl.addEventListener('click', startGame)
+
 answerButtonsEl.addEventListener('click',() => {
-        currentQuestionIndex++;
-        setNextQuestion();
+    // if (shuffledQuestions.length <= currentQuestionIndex + 1) {
+    //     clearInterval(countdown())
+    //     var timeLeft = 89;
+    //     return timeLeft;
+    // } else
+    resetState();
+    currentQuestionIndex++;
+    setNextQuestion();
 })
 
 
-
-
 function countdown() {
-    var timeLeft = 89;
-        var timeInterval = setInterval(function(){
-            if (timeLeft === 0) {
-                timerEl.textContent = ' ';
-                clearInterval(timeInterval);
-                displayMessage();
-                return;
-              }
-            if (timeLeft === 1) {
-                timerEl.textContent = timeLeft + ' second remaining';
-              } else {
-              timerEl.textContent = timeLeft + ' seconds remaining';
-              }
-              timeLeft--;    
+    startTimeLeft = 90
+    var timeInterval = setInterval(function(){
+        if (timeLeft === 0) {
+            timerEl.textContent = ' ';
+            clearInterval(timeInterval);
+            displayMessage();
+            return;
+            }
+        if (timeLeft === 1) {
+            timerEl.textContent = timeLeft + ' second remaining';
+            } else {
+            timerEl.textContent = timeLeft + ' seconds remaining';
+            }
+        timeLeft = startTimeLeft--
+        return timeLeft;
         }, 1000);
     }
 
-function startGame() {
+function startGame() { 
     startButtonEl.classList.add('hide')
     shuffledQuestions = questions.sort(() => Math.random() -  .5)
     currentQuestionIndex = 0
     questionContainerEl.classList.remove('hide')
-    countdown()
+    countdown();
     setNextQuestion();
 }
 
@@ -71,26 +79,36 @@ function setNextQuestion() {
 }
 
 function showQuestion(question) {
+    //LOADS QUESTIONS
     if (shuffledQuestions.length >= currentQuestionIndex + 1) {
         questionEl.innerText = question.question
         question.answers.forEach(answer => {
-            const button = document.createElement('button')
+            var button = document.createElement('button')
             button.innerText = answer.text
             button.classList.add('btn')
-        if (answer.correct) {
-            button.dataset.correct = answer.correct
-        }
-        answerButtonsEl.appendChild(button)
+            if (answer.correct) {
+                button.classList.add('correct')            
+            } else {
+                button.classList.add('false')
+            }
+            answerButtonsEl.appendChild(button)
         })
-    } else {
-        questionEl.innerText = "No questions left. Congratulations!"
-        window.confirm("Nice job! You have answered all the questions. Would you like to save your score?");
-        if (window.confirm = true) {
-            window.prompt("Please Enter Your Intials!")
-        } else return;
-        
-    }
-    
+    } 
+    //IF NO QUESTIONS LEFT, PROMPT TO SAVE
+    else {
+        questionEl.innerText = "No more questions left. Congratulations!"
+        window.confirm("Would you like to save your score?")
+        if(window.confirm) {
+            saveScore();
+        } else {
+            resetGame();
+        }
+
+        //Need to kill timer HERE?
+        startButtonEl.innerText = 'Restart'
+        startButtonEl.classList.remove('hide')
+
+    }  
 }
 
 function selectAnswer(e) {
@@ -100,10 +118,7 @@ function selectAnswer(e) {
     Array.from(answerButtonsEl.children).forEach(button => {
         setStatusClass(button, button.dataset.correct)
     })
-    if (shuffledQuestions.length > currentQuestionIndex + 1) {
-        startButtonEl.innerText = 'Restart'
-        startButtonEl.classList.remove('hide')
-    }
+    
 }
 
 function setStatusClass(element, correct) {
@@ -116,8 +131,28 @@ function setStatusClass(element, correct) {
 }
 
 function resetState() {
-    nextButtonEl.classList.add('hide')
     while (answerButtonsEl.firstChild) {
         answerButtonsEl.removeChild(answerButtonsEl.firstChild)
     }
 }
+
+function saveScore() { 
+    var initials = window.prompt("Please enter your initials!")
+    var score = timeLeft
+console.log(initials, score)
+    localStorage.setItem('Initials', initials)
+    localStorage.setItem('Score', score)
+}
+    
+
+
+
+
+// answerButtonsEl.correct.addEventListener('click',() => {
+//         currentQuestionIndex++;
+//         setNextQuestion();
+// })
+// answerButtonsEl.false.addEventListener('click',() => {
+//     currentQuestionIndex++;
+//     setNextQuestion();
+// })

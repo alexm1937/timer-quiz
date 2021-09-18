@@ -27,6 +27,13 @@ main {
     padding: 10px;
     box-shadow: 0 0 10px 2px;
 }
+.highscores {
+    width: 60vw;
+    max-width: 80%;
+    max-height: 5vw;
+    text-align: right;
+}
+
 
 .container {
     width: 800px;
