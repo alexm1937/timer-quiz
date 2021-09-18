@@ -3,6 +3,7 @@ const nextButtonEl = document.getElementById('next-btn')
 const questionContainerEl = document.getElementById('question-container')
 const questionEl = document.getElementById('question')
 const answerButtonsEl = document.getElementById('answer-buttons');
+var timerEl = document.getElementById('timer');
 let shuffledQuestions, currentQuestionIndex = 0
 const questions = [
     {
@@ -28,65 +29,82 @@ const questions = [
                 
             ]}
 ]
-
-
 startButtonEl.addEventListener('click', startGame)
-nextButtonEl.addEventListener('click', () => {
-    currentQuestionIndex++
-    setNextQuestion()
+answerButtonsEl.addEventListener('click',() => {
+        currentQuestionIndex++;
+        setNextQuestion();
 })
+
+
+
+
+function countdown() {
+    var timeLeft = 89;
+        var timeInterval = setInterval(function(){
+            if (timeLeft === 0) {
+                timerEl.textContent = ' ';
+                clearInterval(timeInterval);
+                displayMessage();
+                return;
+              }
+            if (timeLeft === 1) {
+                timerEl.textContent = timeLeft + ' second remaining';
+              } else {
+              timerEl.textContent = timeLeft + ' seconds remaining';
+              }
+              timeLeft--;    
+        }, 1000);
+    }
 
 function startGame() {
     startButtonEl.classList.add('hide')
     shuffledQuestions = questions.sort(() => Math.random() -  .5)
     currentQuestionIndex = 0
     questionContainerEl.classList.remove('hide')
+    countdown()
     setNextQuestion();
 }
 
 function setNextQuestion() {
-    resetState()
+    resetState();
     showQuestion(shuffledQuestions[currentQuestionIndex])
 }
 
 function showQuestion(question) {
-    questionEl.innerText = question.question
-    question.answers.forEach(answer => {
-        const button = document.createElement('button')
-        button.innerText = answer.text
-        button.classList.add('btn')
+    if (shuffledQuestions.length >= currentQuestionIndex + 1) {
+        questionEl.innerText = question.question
+        question.answers.forEach(answer => {
+            const button = document.createElement('button')
+            button.innerText = answer.text
+            button.classList.add('btn')
         if (answer.correct) {
             button.dataset.correct = answer.correct
         }
-        //*Can i add answer.false to track wrong answer clicks? then use to target timer sub action
-    button.addEventListener('click', selectAnswer)
-    answerButtonsEl.appendChild(button)
-    })
+        answerButtonsEl.appendChild(button)
+        })
+    } else {
+        questionEl.innerText = "No questions left. Congratulations!"
+        window.confirm("Nice job! You have answered all the questions. Would you like to save your score?");
+        if (window.confirm = true) {
+            window.prompt("Please Enter Your Intials!")
+        } else return;
+        
+    }
+    
 }
 
 function selectAnswer(e) {
     const selectedButton = e.target
     const correct = selectedButton.dataset.correct
-        //WRITE IF LOOP FOR IF BUTTON IS CLICKED, SUB TIME IF WRONG, ADVANCE NEXT QUESTION IF ANY REMAIN
+    setStatusClass(document.body, correct)
+    Array.from(answerButtonsEl.children).forEach(button => {
+        setStatusClass(button, button.dataset.correct)
+    })
+    if (shuffledQuestions.length > currentQuestionIndex + 1) {
+        startButtonEl.innerText = 'Restart'
+        startButtonEl.classList.remove('hide')
+    }
 }
-
-
-
-
-    //PREVIOUS SELECT ANSWERS(e) FUNC
-//     const selectedButton = e.target
-//     const correct = selectedButton.dataset.correct
-//     setStatusClass(document.body, correct)
-//     Array.from(answerButtonsEl.children).forEach(button => {
-//         setStatusClass(button, button.dataset.correct)
-//     })
-//     if (shuffledQuestions.length > currentQuestionIndex + 1) {
-//     nextButtonEl.classList.remove('hide')
-//     } else {
-//         startButtonEl.innerText = 'Restart'
-//         startButtonEl.classList.remove('hide')
-//     }
-// }
 
 function setStatusClass(element, correct) {
     clearStatusClass(element) 
@@ -96,11 +114,6 @@ function setStatusClass(element, correct) {
         element.classList.add('wrong')
     }
 }
-        //for body color hue
-// function clearStatusClass(element) {
-//     element.classList.remove('correct')
-//     element.classList.remove('wrong')
-// }
 
 function resetState() {
     nextButtonEl.classList.add('hide')
