@@ -67,11 +67,12 @@ answerButtonsEl.addEventListener('click',() => {
 //         }, 1000);
 //     }
 function clockTick() {
+    if (shuffledQuestions.length >= currentQuestionIndex + 1) {
     time--;
     timerEl.textContent = time;
     if (time <= 0) {
         stopGame()
-    }
+    }}
 }
 
 function startGame() { 
