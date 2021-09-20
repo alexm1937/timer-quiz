@@ -9,7 +9,7 @@ var timerEl = document.getElementById('timer');
 let shuffledQuestions, currentQuestionIndex = 0;
 var time;
 var timerId;
-const highScoresArr = JSON.parse(localStorage.getItem("highScoresArr")) || []
+var highScoresArr = JSON.parse(localStorage.getItem("highScoresArr")) || []
 const questions = [
     {
      question: "What language gives a browser the basic markup to create a page on the internet?",
@@ -35,6 +35,7 @@ const questions = [
             ]}
 ]
 restartButtonEl.addEventListener('click', startGame)
+saveButtonEl.addEventListener('click', saveScore)
 startButtonEl.addEventListener('click', startGame)
 answerButtonsEl.addEventListener('click',() => {
     //How to select class?
@@ -49,6 +50,7 @@ answerButtonsEl.addEventListener('click',() => {
         clockTick();
         endGame();
     }})
+
 
 function clockTick() {
     if (shuffledQuestions.length >= currentQuestionIndex + 1 && time >= 0) {
@@ -91,8 +93,31 @@ function showQuestion(question) {
         } else {
             button.classList.add('false')
         }
+        button.addEventListener('click', selectAnswer) 
         answerButtonsEl.appendChild(button)
+        
 })}
+
+
+function selectAnswer(e) {
+    const selectedButton = e.target
+    const correct = selectedButton.dataset.correct
+    // setStatusClass(document.body, correct)
+    Array.from(answerButtonsEl.children).forEach(button => {
+        checkAnswer(button, button.dataset.correct)
+    })   
+}
+
+function checkAnswer(element, correct) {
+    if (!correct) {
+        time -= 10;
+    }
+}
+
+
+
+
+
 
 function resetState() {
     while (answerButtonsEl.firstChild) {
@@ -107,21 +132,8 @@ function endGame() {
     questionContainerEl.classList.add('hide')
     restartButtonEl.classList.remove('hide')
     saveButtonEl.classList.remove('hide')
-    //CREATE RESTART BUTTON
-    //CREATE SAVE BUTTON
 
 }
-
-
-//     var msgSave = "Would you like to save your score?";
-//     
-//     if (confirm(msgSave)) {
-//         saveScore()
-//     } 
-//     if (confirm(msgTryAgain)) {
-//         restartGame();
-//     }
-// }
 
 function restartGame() {
     resetState();
@@ -137,16 +149,16 @@ function saveScore() {
         name: initials,
         timeScore: time
     };
-    highScoresArr.push(JSON.stringify(score));
+    highScoresArr.push(score)
     console.log(highScoresArr);
-    localStorage.setItem("highScoresArr", highScoresArr)
+    localStorage.setItem(JSON.stringify(initials, highScoresArr))
+}
     // var msgTryAgain = "Would you like to try again?";
     // if (confirm(msgTryAgain)) {
     // restartGame();
     // } else {
     //     stopGame();
     // }
-}
 
 
 
@@ -186,3 +198,14 @@ function saveScore() {
     // Array.from(answerButtonsEl.children).forEach(button => {
     //     setStatusClass(button, button.dataset.correct)
     // })
+
+
+//     var msgSave = "Would you like to save your score?";
+//     
+//     if (confirm(msgSave)) {
+//         saveScore()
+//     } 
+//     if (confirm(msgTryAgain)) {
+//         restartGame();
+//     }
+// }
