@@ -42,9 +42,9 @@ answerButtonsEl.addEventListener('click',() => {
         resetState();
         setNextQuestion();
     } else { 
+        clockTick();
         endGame();
     }})
-
 
 function clockTick() {
     if (shuffledQuestions.length >= currentQuestionIndex + 1 && time >= 0) {
@@ -71,19 +71,18 @@ function setNextQuestion() {
 }
 
 function showQuestion(question) {
-    //LOADS QUESTIONS
-        questionEl.innerText = question.question
-        question.answers.forEach(answer => {
-            var button = document.createElement('button')
-            button.innerText = answer.text
-            button.classList.add('btn')
-            if (answer.correct) {
-                button.dataset.correct = answer.correct
-                button.classList.add('correct')            
-            } else {
-                button.classList.add('false')
-            }
-            answerButtonsEl.appendChild(button)
+    questionEl.innerText = question.question
+    question.answers.forEach(answer => {
+        var button = document.createElement('button')
+        button.innerText = answer.text
+        button.classList.add('btn')
+        if (answer.correct) {
+            button.dataset.correct = answer.correct
+            button.classList.add('correct')            
+        } else {
+            button.classList.add('false')
+        }
+        answerButtonsEl.appendChild(button)
 })}
 
 function resetState() {
@@ -94,15 +93,23 @@ function resetState() {
 
 function endGame() {
     questionEl.innerText = "No more questions left. Congratulations!"
-    var msgSave = "Would you like to save your score?";
-    var msgTryAgain = "Would you like to try again?";
-    if (confirm(msgSave)) {
-        saveScore()
-    } 
-    if (confirm(msgTryAgain)) {
-        restartGame();
-    }
+    answerButtonsEl.classList.add('hide')
+    clearInterval(timerId);
+
+
+
 }
+
+
+//     var msgSave = "Would you like to save your score?";
+//     var msgTryAgain = "Would you like to try again?";
+//     if (confirm(msgSave)) {
+//         saveScore()
+//     } 
+//     if (confirm(msgTryAgain)) {
+//         restartGame();
+//     }
+// }
 
 function restartGame() {
     resetState();
