@@ -1,5 +1,6 @@
 const startButtonEl = document.getElementById('start-btn')
 const restartButtonEl = document.getElementById('restart-btn')
+const saveButtonEl = document.getElementById('save-btn')
 const endMessageEl = document.getElementById('end-message')
 const questionContainerEl = document.getElementById('question-container')
 const questionEl = document.getElementById('question')
@@ -60,9 +61,12 @@ function startGame() {
     startButtonEl.classList.add('hide')
     restartButtonEl.classList.add('hide')
     endMessageEl.classList.add('hide')
-    shuffledQuestions = questions.sort(() => Math.random() -  .5)
+    saveButtonEl.classList.add('hide')
     currentQuestionIndex = 0
     questionContainerEl.classList.remove('hide')
+    answerButtonsEl.classList.remove('hide')
+    shuffledQuestions = questions.sort(() => Math.random() -  .5)
+    
     timerId = setInterval(clockTick, 1000)
     time = 90
     timerEl.textContent = time;
@@ -102,6 +106,7 @@ function endGame() {
     answerButtonsEl.classList.add('hide')
     questionContainerEl.classList.add('hide')
     restartButtonEl.classList.remove('hide')
+    saveButtonEl.classList.remove('hide')
     //CREATE RESTART BUTTON
     //CREATE SAVE BUTTON
 
