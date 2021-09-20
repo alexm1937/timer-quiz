@@ -1,5 +1,6 @@
 const startButtonEl = document.getElementById('start-btn')
-const nextButtonEl = document.getElementById('next-btn')
+const restartButtonEl = document.getElementById('restart-btn')
+const endMessageEl = document.getElementById('end-message')
 const questionContainerEl = document.getElementById('question-container')
 const questionEl = document.getElementById('question')
 const answerButtonsEl = document.getElementById('answer-buttons');
@@ -21,10 +22,10 @@ const questions = [
         answers: [
             {text: "Casper's Style Sheet", correct: false},
             {text: "Cascading Style Sheets", correct: true},
-            {text: "Cascading Stlye Source", correct: false},
+            {text: "Cascading Style Source", correct: false},
             {text: "Condescending Style Sheets", correct: false}
         ]},{
-            question: "Are there a diffencs between the languages of Java and JavaScript?",
+            question: "Is there a difference between the languages of Java and JavaScript?",
             answers: [
                 {text: "Yes, Java is a PROGRAMMING LANGUAGE, while JavaScript is a SCRIPTING LANGUAGE", correct: true},
                 {text: "Yes, Java will only create applications to run in a Virtual Machine, while JavaScript will only run in a web browser",
@@ -32,9 +33,11 @@ const questions = [
                 
             ]}
 ]
+restartButtonEl.addEventListener('click', startGame)
 startButtonEl.addEventListener('click', startGame)
 answerButtonsEl.addEventListener('click',() => {
-    if (answerButtonsEl !== questions[currentQuestionIndex].answers.correct) { 
+    //How to select class?
+    if (answerButtonsEl.class = false) { 
         time -= 10;
     }
     if (shuffledQuestions.length > currentQuestionIndex + 1) {
@@ -55,6 +58,8 @@ function clockTick() {
 
 function startGame() { 
     startButtonEl.classList.add('hide')
+    restartButtonEl.classList.add('hide')
+    endMessageEl.classList.add('hide')
     shuffledQuestions = questions.sort(() => Math.random() -  .5)
     currentQuestionIndex = 0
     questionContainerEl.classList.remove('hide')
@@ -92,17 +97,19 @@ function resetState() {
 }
 
 function endGame() {
-    questionEl.innerText = "No more questions left. Congratulations!"
-    answerButtonsEl.classList.add('hide')
     clearInterval(timerId);
-
-
+    endMessageEl.classList.remove('hide')
+    answerButtonsEl.classList.add('hide')
+    questionContainerEl.classList.add('hide')
+    restartButtonEl.classList.remove('hide')
+    //CREATE RESTART BUTTON
+    //CREATE SAVE BUTTON
 
 }
 
 
 //     var msgSave = "Would you like to save your score?";
-//     var msgTryAgain = "Would you like to try again?";
+//     
 //     if (confirm(msgSave)) {
 //         saveScore()
 //     } 
