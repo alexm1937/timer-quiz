@@ -9,7 +9,7 @@ var timerEl = document.getElementById('timer');
 let shuffledQuestions, currentQuestionIndex = 0;
 var time;
 var timerId;
-var highScoresArr = JSON.parse(localStorage.getItem("highScoresArr")) || []
+var highScoresArr = JSON.parse(localStorage.getItem("highscores")) || [];
 const questions = [
     {
      question: "What language gives a browser the basic markup to create a page on the internet?",
@@ -38,10 +38,6 @@ restartButtonEl.addEventListener('click', startGame)
 saveButtonEl.addEventListener('click', saveScore)
 startButtonEl.addEventListener('click', startGame)
 answerButtonsEl.addEventListener('click',() => {
-    //How to select class?
-    if (answerButtonsEl.class = false) { 
-        time -= 10;
-    }
     if (shuffledQuestions.length > currentQuestionIndex + 1) {
         currentQuestionIndex++;
         resetState();
@@ -73,6 +69,7 @@ function startGame() {
     time = 90
     timerEl.textContent = time;
     clockTick();
+    console.log(highScoresArr);
     setNextQuestion();
 }
 
@@ -84,7 +81,7 @@ function setNextQuestion() {
 function showQuestion(question) {
     questionEl.innerText = question.question
     question.answers.forEach(answer => {
-        var button = document.createElement('button')
+        const button = document.createElement('button')
         button.innerText = answer.text
         button.classList.add('btn')
         if (answer.correct) {
@@ -102,13 +99,12 @@ function showQuestion(question) {
 function selectAnswer(e) {
     const selectedButton = e.target
     const correct = selectedButton.dataset.correct
-    // setStatusClass(document.body, correct)
     Array.from(answerButtonsEl.children).forEach(button => {
-        checkAnswer(button, button.dataset.correct)
+        
     })   
 }
 
-function checkAnswer(element, correct) {
+function checkAnswer() {
     if (!correct) {
         time -= 10;
     }
@@ -144,15 +140,24 @@ function restartGame() {
 }
 
 function saveScore() { 
-    var initials = window.prompt("Please enter your initials!")
-    const score = {
-        name: initials,
-        timeScore: time
-    };
-    highScoresArr.push(score)
+    var initials = window.prompt("Please enter your initials!");
+    var timeScore = time;
+    var score = {initials, timeScore}
+    highScoresArr.push(score.initials, score.timeScore);
     console.log(highScoresArr);
-    localStorage.setItem(JSON.stringify(initials, highScoresArr))
+    var scoreString = JSON.stringify(highScoresArr);
+    localStorage.setItem("highScores", scoreString);
 }
+
+// function loadScore () {
+//     if (!highScoresArr) {
+//         highScoresArr = { 
+//             initials: [],
+//             timeScore: []
+//         };  
+//     };
+// };
+// //     
     // var msgTryAgain = "Would you like to try again?";
     // if (confirm(msgTryAgain)) {
     // restartGame();
