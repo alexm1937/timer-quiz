@@ -9,7 +9,7 @@ var timerEl = document.getElementById('timer');
 let shuffledQuestions, currentQuestionIndex = 0;
 var time;
 var timerId;
-const highScoresArr = JSON.parse(localStorage.getItem("highScoresArr")) || []
+var highScoresArr = JSON.parse(localStorage.getItem("highscores")) || [];
 const questions = [
     {
      question: "What language gives a browser the basic markup to create a page on the internet?",
@@ -19,28 +19,23 @@ const questions = [
          {text: "HTML", correct: true},
          {text: "Markdown", correct: false}
     ]},{
-        question: "What does 'CSS' stand for?",
-        answers: [
-            {text: "Casper's Style Sheet", correct: false},
-            {text: "Cascading Style Sheets", correct: true},
-            {text: "Cascading Style Source", correct: false},
-            {text: "Condescending Style Sheets", correct: false}
+    question: "What does 'CSS' stand for?",
+    answers: [
+        {text: "Casper's Style Sheet", correct: false},
+        {text: "Cascading Style Sheets", correct: true},
+        {text: "Cascading Style Source", correct: false},
+        {text: "Condescending Style Sheets", correct: false}
         ]},{
-            question: "Is there a difference between the languages of Java and JavaScript?",
-            answers: [
-                {text: "Yes, Java is a PROGRAMMING LANGUAGE, while JavaScript is a SCRIPTING LANGUAGE", correct: true},
-                {text: "Yes, Java will only create applications to run in a Virtual Machine, while JavaScript will only run in a web browser",
-                            correct: false},
-                
+        question: "Is there a difference between the languages of Java and JavaScript?",
+        answers: [
+            {text: "Yes, Java is a PROGRAMMING LANGUAGE, while JavaScript is a SCRIPTING LANGUAGE", correct: true},
+            {text: "Yes, Java will only create applications to run in a Virtual Machine, while JavaScript will only run in a web browser", correct: false},
             ]}
 ]
 restartButtonEl.addEventListener('click', startGame)
+saveButtonEl.addEventListener('click', saveScore)
 startButtonEl.addEventListener('click', startGame)
 answerButtonsEl.addEventListener('click',() => {
-    //How to select class?
-    if (answerButtonsEl.class = false) { 
-        time -= 10;
-    }
     if (shuffledQuestions.length > currentQuestionIndex + 1) {
         currentQuestionIndex++;
         resetState();
@@ -49,6 +44,7 @@ answerButtonsEl.addEventListener('click',() => {
         clockTick();
         endGame();
     }})
+
 
 function clockTick() {
     if (shuffledQuestions.length >= currentQuestionIndex + 1 && time >= 0) {
@@ -71,6 +67,7 @@ function startGame() {
     time = 90
     timerEl.textContent = time;
     clockTick();
+    console.log(highScoresArr);
     setNextQuestion();
 }
 
@@ -82,7 +79,7 @@ function setNextQuestion() {
 function showQuestion(question) {
     questionEl.innerText = question.question
     question.answers.forEach(answer => {
-        var button = document.createElement('button')
+        const button = document.createElement('button')
         button.innerText = answer.text
         button.classList.add('btn')
         if (answer.correct) {
@@ -91,8 +88,27 @@ function showQuestion(question) {
         } else {
             button.classList.add('false')
         }
+        button.addEventListener('click', selectAnswer) 
         answerButtonsEl.appendChild(button)
+        
 })}
+
+
+function selectAnswer(e) {
+    const selectedButton = e.target
+    const correct = selectedButton.dataset.correct
+    Array.from(answerButtonsEl.children).forEach(button => {
+        
+    })   
+}
+
+function checkAnswer() {
+    if (!correct) {
+        time -= 10;
+    }
+}
+
+
 
 function resetState() {
     while (answerButtonsEl.firstChild) {
@@ -107,21 +123,8 @@ function endGame() {
     questionContainerEl.classList.add('hide')
     restartButtonEl.classList.remove('hide')
     saveButtonEl.classList.remove('hide')
-    //CREATE RESTART BUTTON
-    //CREATE SAVE BUTTON
 
 }
-
-
-//     var msgSave = "Would you like to save your score?";
-//     
-//     if (confirm(msgSave)) {
-//         saveScore()
-//     } 
-//     if (confirm(msgTryAgain)) {
-//         restartGame();
-//     }
-// }
 
 function restartGame() {
     resetState();
@@ -132,57 +135,11 @@ function restartGame() {
 }
 
 function saveScore() { 
-    var initials = window.prompt("Please enter your initials!")
-    const score = {
-        name: initials,
-        timeScore: time
-    };
-    highScoresArr.push(JSON.stringify(score));
+    var initials = window.prompt("Please enter your initials!");
+    var timeScore = time;
+    var score = {initials, timeScore}
+    highScoresArr.push(score.initials, score.timeScore);
     console.log(highScoresArr);
-    localStorage.setItem("highScoresArr", highScoresArr)
-    // var msgTryAgain = "Would you like to try again?";
-    // if (confirm(msgTryAgain)) {
-    // restartGame();
-    // } else {
-    //     stopGame();
-    // }
+    var scoreString = JSON.stringify(highScoresArr);
+    localStorage.setItem("highScores", scoreString);
 }
-
-
-
-    // var save = []
-    // console.log(initials, score)
-    // save.push(JSON.stringify(score))
-    // save.push(initials)
-    // localStorage.setItem(initials, save)
-    // console.log(save)
-    // localStorage.setItem('Initials', initials)
-    // localStorage.setItem('Score', score)
-
-
-
-
-// answerButtonsEl.correct.addEventListener('click',() => {
-//         currentQuestionIndex++;
-//         setNextQuestion();
-// })
-// answerButtonsEl.false.addEventListener('click',() => {
-//     currentQuestionIndex++;
-//     setNextQuestion();
-// })
-// function setStatusClass(element, correct) {
-//     clearStatusClass(element) 
-//     if (correct) {
-//         element.classList.add('correct')
-//     } else { 
-//         element.classList.add('wrong')
-//     }
-// }    // startButtonEl.innerText = 'Restart'
-    // startButtonEl.classList.remove('hide')
-    
-    
-    //const correct = selectedButton.dataset.correct
-    // setStatusClass(document.body, correct)
-    // Array.from(answerButtonsEl.children).forEach(button => {
-    //     setStatusClass(button, button.dataset.correct)
-    // })
