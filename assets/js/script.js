@@ -19,19 +19,17 @@ const questions = [
          {text: "HTML", correct: true},
          {text: "Markdown", correct: false}
     ]},{
-        question: "What does 'CSS' stand for?",
-        answers: [
-            {text: "Casper's Style Sheet", correct: false},
-            {text: "Cascading Style Sheets", correct: true},
-            {text: "Cascading Style Source", correct: false},
-            {text: "Condescending Style Sheets", correct: false}
+    question: "What does 'CSS' stand for?",
+    answers: [
+        {text: "Casper's Style Sheet", correct: false},
+        {text: "Cascading Style Sheets", correct: true},
+        {text: "Cascading Style Source", correct: false},
+        {text: "Condescending Style Sheets", correct: false}
         ]},{
-            question: "Is there a difference between the languages of Java and JavaScript?",
-            answers: [
-                {text: "Yes, Java is a PROGRAMMING LANGUAGE, while JavaScript is a SCRIPTING LANGUAGE", correct: true},
-                {text: "Yes, Java will only create applications to run in a Virtual Machine, while JavaScript will only run in a web browser",
-                            correct: false},
-                
+        question: "Is there a difference between the languages of Java and JavaScript?",
+        answers: [
+            {text: "Yes, Java is a PROGRAMMING LANGUAGE, while JavaScript is a SCRIPTING LANGUAGE", correct: true},
+            {text: "Yes, Java will only create applications to run in a Virtual Machine, while JavaScript will only run in a web browser", correct: false},
             ]}
 ]
 restartButtonEl.addEventListener('click', startGame)
@@ -112,9 +110,6 @@ function checkAnswer() {
 
 
 
-
-
-
 function resetState() {
     while (answerButtonsEl.firstChild) {
         answerButtonsEl.removeChild(answerButtonsEl.firstChild)
@@ -148,69 +143,3 @@ function saveScore() {
     var scoreString = JSON.stringify(highScoresArr);
     localStorage.setItem("highScores", scoreString);
 }
-
-// function loadScore () {
-//     if (!highScoresArr) {
-//         highScoresArr = { 
-//             initials: [],
-//             timeScore: []
-//         };  
-//     };
-// };
-// //     
-    // var msgTryAgain = "Would you like to try again?";
-    // if (confirm(msgTryAgain)) {
-    // restartGame();
-    // } else {
-    //     stopGame();
-    // }
-
-
-
-    // var save = []
-    // console.log(initials, score)
-    // save.push(JSON.stringify(score))
-    // save.push(initials)
-    // localStorage.setItem(initials, save)
-    // console.log(save)
-    // localStorage.setItem('Initials', initials)
-    // localStorage.setItem('Score', score)
-
-
-
-
-// answerButtonsEl.correct.addEventListener('click',() => {
-//         currentQuestionIndex++;
-//         setNextQuestion();
-// })
-// answerButtonsEl.false.addEventListener('click',() => {
-//     currentQuestionIndex++;
-//     setNextQuestion();
-// })
-// function setStatusClass(element, correct) {
-//     clearStatusClass(element) 
-//     if (correct) {
-//         element.classList.add('correct')
-//     } else { 
-//         element.classList.add('wrong')
-//     }
-// }    // startButtonEl.innerText = 'Restart'
-    // startButtonEl.classList.remove('hide')
-    
-    
-    //const correct = selectedButton.dataset.correct
-    // setStatusClass(document.body, correct)
-    // Array.from(answerButtonsEl.children).forEach(button => {
-    //     setStatusClass(button, button.dataset.correct)
-    // })
-
-
-//     var msgSave = "Would you like to save your score?";
-//     
-//     if (confirm(msgSave)) {
-//         saveScore()
-//     } 
-//     if (confirm(msgTryAgain)) {
-//         restartGame();
-//     }
-// }
