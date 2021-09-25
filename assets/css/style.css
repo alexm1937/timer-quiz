@@ -1,0 +1,60 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    height: 60vw;
+}
+main {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    vertical-align: center;
+    height: 50vw;
+}
+.timer {
+    width: 30vw; 
+    max-width: 80%;
+    max-height: 5vw;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 0 10px 2px;
+}
+.highscores {
+    width: 60vw;
+    max-width: 80%;
+    max-height: 5vw;
+    text-align: right;
+}
+
+
+.container {
+    width: 800px;
+    max-width: 80%;
+    border-radius: 5px; 
+    padding: 10px;
+    box-shadow: 0 0 10px 2px;
+}
+.btn-grid {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 10px;
+    margin: 20px 0;
+}
+.btn {
+border: 1px solid navy;
+border-radius: 5px;
+padding: 5px 10px;
+}
+.hide {
+    display: none;
+}
+
+
